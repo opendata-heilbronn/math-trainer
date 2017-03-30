@@ -1,0 +1,89 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <div id="question"></div>
+
+
+    <form onsubmit="onButtonClick(event)">
+        <input id="answer" autofocus></input>
+        <button id="button">check</button>
+    </form>
+
+
+
+
+
+    <div id="output"></div>
+
+
+    <div class="checkbox">
+    <input type="checkbox" id="mul" autofocus>Multipikation</input>
+    </br>
+    <input type="checkbox" id="add" autofocus>Addition</input>
+    </br>
+    <input type="checkbox" id="sub" autofocus>Subtraktion</input>
+    </br>
+  </div>
+
+
+
+
+
+    <script>
+        var num1 = randomNumber();
+        var num2 = randomNumber();
+        var question = "Was ist " + num1 + " * " + num2 + " ?";
+
+
+
+
+
+        function randomNumber() {
+            return Math.round(Math.random() * 9);
+        }
+
+
+        function randomNumberExtended() {
+            return Math.round(Math.random() * 20);
+        }
+
+
+        function addQuestion(){
+
+          document.getElementById("add").checked = true;
+
+
+
+        }
+
+
+        function onButtonClick(e) {
+            e.preventDefault();
+            var userInput = answer.value;
+            if (userInput == num1 * num2) {
+
+                document.getElementById("output").innerHTML = (userInput + " ist richtig!");
+            } else {
+                document.getElementById("output").innerHTML = (userInput + " Ist Falsch!");
+            }
+            answer.value = "";
+            nextQuestion();
+            return false;
+
+        }
+
+        function nextQuestion() {
+            num1 = randomNumber();
+            num2 = randomNumber();
+            var question = "Was ist " + num1 + " * " + num2 + " ?";
+            document.getElementById("question").innerHTML = question;
+
+        }
+    </script>
+
+</body>
+
+</html>
