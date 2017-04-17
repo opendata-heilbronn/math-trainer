@@ -1,18 +1,20 @@
 <html>
 
 <head>
+<title>Math-trainer</title>
+
 </head>
 
 <body>
 
 
-<link href="style.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 
 
     <div id="question" class="question"></div>
 
 
-    <form onsubmit="onButtonClickMulti(event)">
+    <form onsubmit="onButtonClick(event)">
         <input id="answer" autofocus></input>
         <button id="button" class="button">check</button>
     </form>
@@ -21,21 +23,7 @@
 
 
 
-    <div id="output"></div>
-
-
-<!--    <div class="checkbox">
-    <input type="checkbox" id="mul" autofocus>Multipikation</input>
-    </br>
-    <input type="checkbox" id="add" autofocus>Addition</input>
-    </br>
-    <input type="checkbox" id="sub" autofocus>Subtraktion</input>
-    </br>
-  </div>
--->
-
-
-
+    <div id="output" class="output"></div>
 
 
     <script src="script.js"></script>

@@ -1,3 +1,5 @@
+/*
+
 body {
      background: rgb(150, 150, 150);
      font-family: Calibri;
@@ -11,12 +13,12 @@ body {
  .question {
  font-size: 30px;
  font-weight: bold;
- /*color : rgb(255, 255, 255);*/
+color : rgb(255, 255, 255);
  flex-grow: -1;
  display: flex;
  justify-content: center;
  align-items: center;
- /*transition: all 1s;*/
+ transition: all 1s;
  }
 
  .button {
@@ -30,3 +32,4 @@ body {
  transition: all 1s;
  text-size: 15px;
  }
+*/

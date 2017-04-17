@@ -11,9 +11,6 @@ function randomNumber() {
 }
 
 
-function randomNumberExtended() {
-    return Math.round(Math.random() * 20);
-}
 
 
 
@@ -21,23 +18,11 @@ function randomNumberExtended() {
 
 
 
-/* function onButtonClickAdd(e) {
-    e.preventDefault();
-    var userInput = answer.value;
-    if (userInput == num1 + num2) {
-
-        document.getElementById("output").innerHTML = (userInput + " ist richtig!");
-    } else {
-        document.getElementById("output").innerHTML = (userInput + " Ist Falsch!");
-    }
-    answer.value = "";
-    nextQuestionAdd();
-    return false;
-  }
-*/
 
 
-function onButtonClickMulti(e) {
+
+
+function onButtonClick(e) {
     e.preventDefault();
     var userInput = answer.value;
     if (userInput == num1 * num2) {
@@ -47,23 +32,15 @@ function onButtonClickMulti(e) {
         document.getElementById("output").innerHTML = (userInput + " Ist Falsch!");
     }
     answer.value = "";
-    nextQuestionMulti();
+    nextQuestion();
     return false;
 
 }
 
-function nextQuestionMulti() {
+function nextQuestion() {
     num1 = randomNumber();
     num2 = randomNumber();
     var question = "Was ist " + num1 + " * " + num2 + " ?";
     document.getElementById("question").innerHTML = question;
 
-
-  /*  function nextQuestionAdd() {
-        num1 = randomNumber();
-        num2 = randomNumber();
-        var question = "Was ist " + num1 + " + " + num2 + " ?";
-        document.getElementById("question").innerHTML = question;
-
 }
-*/
