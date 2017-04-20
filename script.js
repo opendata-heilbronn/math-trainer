@@ -38,7 +38,7 @@ function onButtonClick(e) {
     answer.value = "";
     var datumDifferenz = datum2 - datum1;
     var datumDifferenzGerundet = datumDifferenz / 1000;
-    alert(datumDifferenzGerundet);
+    document.getElementById("time").innerHTML = ("Du hast " + datumDifferenzGerundet + " Sekunden gebraucht!");
     nextQuestion();
     return false;
 
