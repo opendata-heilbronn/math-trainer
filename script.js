@@ -1,7 +1,9 @@
 var num1 = randomNumber();
 var num2 = randomNumber();
+var datum1
+var datum2
 var question = "Was ist " + num1 + " * " + num2 + " ?";
-
+nextQuestion();
 
 
 
@@ -24,6 +26,8 @@ function randomNumber() {
 
 function onButtonClick(e) {
     e.preventDefault();
+
+    datum2 = new Date();
     var userInput = answer.value;
     if (userInput == num1 * num2) {
 
@@ -32,8 +36,12 @@ function onButtonClick(e) {
         document.getElementById("output").innerHTML = (userInput + " Ist Falsch!");
     }
     answer.value = "";
+    var datumDifferenz = datum2 - datum1;
+    var datumDifferenzGerundet = datumDifferenz / 1000;
+    alert(datumDifferenzGerundet);
     nextQuestion();
     return false;
+
 
 }
 
@@ -42,5 +50,6 @@ function nextQuestion() {
     num2 = randomNumber();
     var question = "Was ist " + num1 + " * " + num2 + " ?";
     document.getElementById("question").innerHTML = question;
+    datum1 = new Date();
 
 }
