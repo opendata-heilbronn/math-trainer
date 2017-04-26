@@ -29,11 +29,12 @@ function onButtonClick(e) {
 
     datum2 = new Date();
     var userInput = answer.value;
+    var correctAnswer = num1 * num2;
     if (userInput == num1 * num2) {
 
         document.getElementById("output").innerHTML = (userInput + " ist richtig!");
     } else {
-        document.getElementById("output").innerHTML = (userInput + " Ist Falsch!");
+        document.getElementById("output").innerHTML = (userInput + " Ist Falsch! Richtig wäre " + correctAnswer + "!");
     }
     answer.value = "";
     var datumDifferenz = datum2 - datum1;
