@@ -8,6 +8,11 @@
 
 <style>
 
+.container {
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+}
+
  body {
       background: rgb(150, 150, 150);
       font-family: Calibri;
@@ -22,42 +27,52 @@
 	font-size: 30px;
 	font-weight: bold;
 	color : rgb(255, 255, 255);
-	flex-grow: -1;
-	display: flex;
 	justify-content: center;
 	align-items: center;
 	transition: all 1s;
+	text-align: center;
 	}
 	
 	.button {
-	background: rgb(0, 0, 0);
-	color: rgb(255, 255, 255);
-	padding: 10px;
-	width : 50%;
+	background: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
+	padding: 5px;
 	text-align: center;
 	cursor: pointer;
-	box-shadow: 0px -1px -1px -1px rgba(0, 0, 0,0.75);
 	transition: all 1s;
-	text-size: 15px;
+	font-size: 20px;
 	}
 
-
+	.answer {
+	font-size: 25px;
+	justify-content: center;
+	transition: all 1s;
+	}
+	
+	.output {
+	font-size: 30px;
+	font-weight: bold;
+	color : rgb(255, 255, 255);
+	justify-content: center;
+	align-items: center;
+	transition: all 1s;
+	text-align: center;
+	}
 
 </style>
+	<div class="container">
+	
     <div id="question" class="question"></div>
 
 
-    <form onsubmit="onButtonClick(event)">
-        <input id="answer" autofocus></input>
-        <button id="button" class="button">check</button>
-    </form>
+    <form onsubmit="onButtonClickMulti(event)" style="text-align: center">
+        <input id="answer" class="answer" autofocus></input>
+        <p><button id="button" class="button">check</button></p>
+	</form>
 
 
-
-
-
-    <div id="output"></div>
-
+    <div id="output" class="output"></div>
+</div>
 
 <!--    <div class="checkbox">
     <input type="checkbox" id="mul" autofocus>Multipikation</input>

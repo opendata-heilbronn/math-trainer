@@ -16,9 +16,6 @@ function randomNumberExtended() {
 }
 
 
-if (){
-
-}
 
 
 
@@ -45,9 +42,9 @@ function onButtonClickMulti(e) {
     var userInput = answer.value;
     if (userInput == num1 * num2) {
 
-        document.getElementById("output").innerHTML = (userInput + " ist richtig!");
+        document.getElementById("output").innerHTML = ("Richtig!");
     } else {
-        document.getElementById("output").innerHTML = (userInput + " Ist Falsch!");
+        document.getElementById("output").innerHTML = ("Falsch!");
     }
     answer.value = "";
     nextQuestionMulti();
@@ -60,13 +57,15 @@ function nextQuestionMulti() {
     num2 = randomNumber();
     var question = "Was ist " + num1 + " * " + num2 + " ?";
     document.getElementById("question").innerHTML = question;
+}
 
 
-  /*  function nextQuestionAdd() {
+     function nextQuestionAdd() {
         num1 = randomNumber();
         num2 = randomNumber();
         var question = "Was ist " + num1 + " + " + num2 + " ?";
         document.getElementById("question").innerHTML = question;
 
 }
-*/
+nextQuestionMulti();
+onButtonClickMulti();
