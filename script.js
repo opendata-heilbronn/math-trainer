@@ -69,6 +69,3 @@ nextQuestionMulti();
 onButtonClickMulti();
 
     datum1 = new Date();
-
-}
-
