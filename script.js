@@ -58,14 +58,9 @@ function nextQuestion() {
 }
 
 
-     function nextQuestionAdd() {
-        num1 = randomNumber();
-        num2 = randomNumber();
-        var question = "Was ist " + num1 + " + " + num2 + " ?";
-        document.getElementById("question").innerHTML = question;
 
-}
-nextQuestionMulti();
-onButtonClickMulti();
+
+
+nextQuestion();
 
     datum1 = new Date();
