@@ -54,7 +54,7 @@ function nextQuestion() {
     num2 = randomNumber();
     var question = "Was ist " + num1 + " * " + num2 + " ?";
     document.getElementById("question").innerHTML = question;
-
+    datum1 = new Date();
 }
 
 
@@ -62,5 +62,3 @@ function nextQuestion() {
 
 
 nextQuestion();
-
-    datum1 = new Date();
