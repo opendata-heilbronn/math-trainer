@@ -8,12 +8,12 @@
       background: rgb(150, 150, 150);
       font-family: Calibri;
     }
-	
+
 	body, html {
 	margin: 0;
 	padding: 0;
 	}
-	
+
 	.question {
 	font-size: 30px;
 	font-weight: bold;
@@ -23,7 +23,7 @@
 	transition: all 1s;
 	text-align: center;
 	}
-	
+
 	.button {
 	background: rgb(255, 255, 255);
 	color: rgb(0, 0, 0);
@@ -39,7 +39,7 @@
 	justify-content: center;
 	transition: all 1s;
 	}
-	
+
 	.output {
 	font-size: 30px;
 	font-weight: bold;
@@ -49,3 +49,9 @@
 	transition: all 1s;
 	text-align: center;
 	}
+
+  #results td {
+
+      padding: 5px;
+
+  }

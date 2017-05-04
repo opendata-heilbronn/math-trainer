@@ -1,4 +1,6 @@
 var question;
+var totalTime = 0;
+var totalQuestions = 0;
 var answer = document.getElementById("answer");
 function randomNumber() {
     return Math.round(Math.random() * 9);
@@ -12,7 +14,7 @@ function onButtonClick(e) {
     question.timeEnd = new Date();
     question.userInput = answer.value;
     question.expectedAnswer = question.num1 * question.num2;
-    question.correct = question.userInput === question.expectedAnswer;
+    question.correct = question.userInput == question.expectedAnswer;
     question.timeDifference = question.timeEnd - question.timeStart;
     if (question.correct) {
         document.getElementById("output").innerHTML = ("Richtig!");
@@ -21,8 +23,11 @@ function onButtonClick(e) {
 
     }
     answer.value = "";
+    totalQuestions++;
+    totalTime += question.timeDifference;
     var timeDifferenceSeconds = question.timeDifference / 1000;
-    document.getElementById("time").innerHTML = ("Du hast " + timeDifferenceSeconds + " Sekunden gebraucht!");
+    document.getElementById("time").innerHTML = ("Du hast " + timeDifferenceSeconds + " Sekunden gebraucht! Durchschnitt: " + Math.round((totalTime/totalQuestions)/100)/10 + " Sekunden!");
+    $("#results").append($("<tr><td>" + question.num1 + " * " + question.num2 + "</td><td>" + question.expectedAnswer + "</td><td>" + question.userInput + "</td><td>" + question.timeDifference + "</td><td>" + question.correct + "</td></tr>"));
     nextQuestion();
     return false;
 
