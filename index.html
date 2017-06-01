@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<title>Math-trainer</title>
+	<title>Math-trainer</title>
 
 </head>
 
@@ -9,37 +9,56 @@
 
 
 
-
-	<div class="container">
-
-
-    <link href="style.css" rel="stylesheet">
+	<div id="view">
+		<div class="container">
 
 
-
-    <div id="question" class="question"></div>
-
-
-    <form onsubmit="onButtonClick(event)" style="text-align: center">
-        <input id="answer" class="answer" autofocus></input>
-        <p><button id="button" class="button">check</button></p>
-	</form>
+			<link href="style.css" rel="stylesheet">
 
 
 
-    <div id="output" class="output"></div>
-</div>
+			<div id="question" class="question"></div>
+
+
+			<form onsubmit="onButtonClick(event)" style="text-align: center">
+				<input id="answer" class="answer" autofocus></input>
+				<p><button id="button" class="button">check</button></p>
+			</form>
 
 
 
+			<div id="output" class="output"></div>
+		</div>
 
 
 
-    <div id="output" class="output"></div>
-    <div id="time" class="time"></div>
+		<div id="output" class="output"></div>
+		<div id="time" class="time"></div>
 		<table id="results">
-			<tr><th>question</th><th>expectedAnswer</th><th>userInput</th><th>time</th><th>correct</th></tr>
+			<tr>
+				<th>question</th>
+				<th>expectedAnswer</th>
+				<th>userInput</th>
+				<th>time</th>
+				<th>correct</th>
+			</tr>
 		</table>
+	</div>
+
+
+
+
+	<div id="outcome" style="display: none;">
+
+		<h1>Deine Zeit: <span id="yourTime"></span> Sekunden</h1><br>
+		<h1>Dein Durchschnitt: <span id="yourAverage"></span> Sekunden</h1><br>
+		<h1>Deine Ergebnisbilanz: <span id="correctAnswersInPercent"></span>%</h1><br>
+		<button>Erneut spielen</button>
+
+
+
+
+		</div>
 
 
 		<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
