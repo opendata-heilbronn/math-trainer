@@ -1,6 +1,6 @@
 var question;
 var totalTime = 0;
-var totalQuestions = 0;
+var questionList = [];
 var answer = document.getElementById("answer");
 function randomNumber() {
     return Math.round(Math.random() * 9);
@@ -22,12 +22,15 @@ function onButtonClick(e) {
         document.getElementById("output").innerHTML = (question.userInput + " Ist Falsch! Richtig wäre " + question.expectedAnswer + "!");
 
     }
+
+
+    questionList.push(question);
     answer.value = "";
-    totalQuestions++;
     totalTime += question.timeDifference;
     var timeDifferenceSeconds = question.timeDifference / 1000;
-    document.getElementById("time").innerHTML = ("Du hast " + timeDifferenceSeconds + " Sekunden gebraucht! Durchschnitt: " + Math.round((totalTime/totalQuestions)/100)/10 + " Sekunden!");
+    document.getElementById("time").innerHTML = ("Du hast " + timeDifferenceSeconds + " Sekunden gebraucht! Durchschnitt: " + Math.round((totalTime/questionList.length)/100)/10 + " Sekunden!");
     $("#results").append($("<tr><td>" + question.num1 + " * " + question.num2 + "</td><td>" + question.expectedAnswer + "</td><td>" + question.userInput + "</td><td>" + question.timeDifference + "</td><td>" + question.correct + "</td></tr>"));
+
     nextQuestion();
     return false;
 
