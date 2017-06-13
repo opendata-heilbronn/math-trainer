@@ -1,64 +1,85 @@
-
 .container {
-  display: flex; /* or inline-flex */
-  flex-direction: column;
+    display: flex;
+    /* or inline-flex */
+    flex-direction: column;
 }
 
-
-#outcome {
+#top-bar {
+    background-image: linear-gradient(180deg, #02029b 1%, #040492 100%);
+    width: 100vw;
+    height: 50px;
 
 }
 
+#title{
 
+  font-family: orbitron;
+  font-size: 50px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  margin-left: 25px;
+  margin-top: 35px;
+  margin-bottom: 5px;
 
- body {
-      background: rgb(150, 150, 150);
-      font-family: Calibri;
-    }
+}
 
-	body, html {
-	margin: 0;
-	padding: 0;
-	}
+#balken {
+    width: 100vw;
+    height: 2px;
+    background: #e7e7f5;
+}
 
-	.question {
-	font-size: 30px;
-	font-weight: bold;
-	color : rgb(255, 255, 255);
-	justify-content: center;
-	align-items: center;
-	transition: all 1s;
-	text-align: center;
-	}
+#outcome {}
 
-	.button {
-	background: rgb(255, 255, 255);
-	color: rgb(0, 0, 0);
-	padding: 5px;
-	text-align: center;
-	cursor: pointer;
-	transition: all 1s;
-	font-size: 20px;
-	}
+body {
+    /* background: #161650; */
+    background-image: linear-gradient(180deg, #0808a1 1%, #161650 100%);
+    font-family: Calibri;
+}
 
-	.answer {
-	font-size: 25px;
-	justify-content: center;
-	transition: all 1s;
-	}
+body, html {
+    margin: 0;
+    padding: 0;
+}
 
-	.output {
-	font-size: 30px;
-	font-weight: bold;
-	color : rgb(255, 255, 255);
-	justify-content: center;
-	align-items: center;
-	transition: all 1s;
-	text-align: center;
-	}
+.question {
+    font-family: orbitron;
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    transition: all 1s;
+    text-align: center;
+    margin-top: 50px
+}
 
-  #results td {
+.button {
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 1s;
+    font-size: 20px;
+}
 
-      padding: 5px;
+.answer {
+    font-size: 25px;
+    justify-content: center;
+    transition: all 1s;
+}
 
-  }
+.output {
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    transition: all 1s;
+    text-align: center;
+}
+
+#results td {
+    padding: 5px;
+}
