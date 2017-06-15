@@ -94,8 +94,16 @@ function showChallengeRoom(challengeRoomId) {
     $("#challengeList").hide();
     $("#challengeRoom").show();
 
+    database.ref('/challengeRoom/'+challengeRoomId).on('value', function (snapshot) {
+        if (snapshot.exists()) {
+            var challengeRoom = snapshot.val();
 
+        } else {
+            // leave room
+        }
+    });
 }
+
 
 
 function createChallengeRoom(challange) {
