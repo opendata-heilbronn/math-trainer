@@ -28,8 +28,6 @@ function signIn() {
         var credential = error.credential;
         // ...
     });
-
-
 }
 
 function updateUserInfo(user) {
@@ -121,7 +119,7 @@ function startCountdownForChallengeId(challengeRoomId) {
 
 }
 
-function beginWithChallenge(challengeRoomId) {
+function beginWithChallenge(challengeRoomId, challengeRoom) {
     console.log("jetzt gehts los!");
 }
 function showChallengeRoom(challengeRoomId) {
@@ -138,7 +136,7 @@ function showChallengeRoom(challengeRoomId) {
                 $("#crCountdown").text("Es geht los in "+challengeRoom["countdown"]+" Sekunden");
                 $("#crCountdown").show();
                 if (challengeRoom["countdown"] == 0) {
-                    beginWithChallenge(challengeRoomId);
+                    beginWithChallenge(challengeRoomId, challengeRoom);
                 }
             } else {
                 $("#crCountdown").hide();
