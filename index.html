@@ -3,17 +3,50 @@
 <head>
 	<title>Math-trainer</title>
 
-		<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+	<script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDOZaP9R_5luc0iosGyoOSLzGTHUO6QPls",
+            authDomain: "math-trainer-4f408.firebaseapp.com",
+            databaseURL: "https://math-trainer-4f408.firebaseio.com",
+            projectId: "math-trainer-4f408",
+            storageBucket: "math-trainer-4f408.appspot.com",
+            messagingSenderId: "709853669041"
+        };
+        firebase.initializeApp(config);
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+	</script>
 
 </head>
 
 <body>
 
-	<div id="top-bar"> <div id="title">Math Trainer</div></div>
-	<div id="balken"></div>
+	<div id="top-bar">
+		<div id="title">Math Trainer</div>
+		<div id="currentUser"></div>
+	</div>
+	<hr>
+
+	<div id="welcome">
+
+		Willkommen beim Math Trainer.
+		Bitte mit Google einloggen.
+
+		<button id="loginButton">Login</button>
+
+	</div>
+
+	<div id="challengeList" style="display: none">
+
+		<button id="startChallenge">Neue Challenge starten</button>
+
+	</div>
 
 
-	<div id="view">
+	<div id="view" style="display: none">
 		<div class="container">
 
 
@@ -67,6 +100,7 @@
 
 		<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="script.js"></script>
+    <script src="app.js"></script>
 
 
 </body>

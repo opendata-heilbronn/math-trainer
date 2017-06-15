@@ -23,11 +23,6 @@
 
 }
 
-#balken {
-    width: 100vw;
-    height: 2px;
-    background: #e7e7f5;
-}
 
 #outcome {}
 
@@ -35,6 +30,7 @@ body {
     /* background: #161650; */
     background-image: linear-gradient(180deg, #0808a1 1%, #161650 100%);
     font-family: Calibri;
+    color: #fff;
 }
 
 body, html {
