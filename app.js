@@ -98,12 +98,16 @@ function showChallengeRoom(challengeRoomId) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
 
+            updatePlayers(challengeRoom);
         } else {
             // leave room
         }
     });
 }
 
+function updatePlayers(challengeRoom) {
+
+}
 
 
 function createChallengeRoom(challange) {
