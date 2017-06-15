@@ -3,7 +3,7 @@ var database = firebase.database();
 
 function signIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
+    firebase.auth().signInWithPopup(provider).then(function (result) {
         var accessToken = result.credential.accessToken;
         var idToken = result.credential.idToken;
 
@@ -20,7 +20,7 @@ function signIn() {
         updateUserInfo(user)
         $('#welcome').hide();
         $('#challengeList').show();
-    }).catch(function(error) {
+    }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -37,7 +37,20 @@ function signIn() {
 function updateUserInfo(user) {
     console.log("user: ", user);
     $("#currentUser").text(user.displayName);
-    readChallenges();
+}
+
+
+function readChallenges() {
+    $('#welcome').hide();
+    $('#challengeList').show();
+    return firebase.database().ref('/challenge/').on('value', function (snapshot) {
+        var list = $("#possibleChallenges");
+        list.empty();
+        snapshot.forEach(function (entry) {
+            console.log(entry.val());
+            list.append(challengeEntry(entry.val()))
+        });
+    });
 }
 
 function checkUserLogin() {
@@ -45,35 +58,25 @@ function checkUserLogin() {
     var accessToken = localStorage.getItem("accessToken");
     var idToken = localStorage.getItem("idToken");
 
-      if (idToken || accessToken){
+    if (idToken || accessToken) {
         console.log("sie sind Angemeldet");
         var credential = firebase.auth.GoogleAuthProvider.credential(
-          idToken, accessToken);
-        firebase.auth().signInWithCredential(credential).then(function(user){
-          updateUserInfo(user);
-          $('#welcome').hide();
-          $('#challengeList').show();
-        }).catch(function(error){
-          console.error(error);
+            idToken, accessToken);
+        firebase.auth().signInWithCredential(credential).then(function (user) {
+            updateUserInfo(user);
+            readChallenges();
+        }).catch(function (error) {
+            console.error(error);
         });
-      }
-
+    }
 
 
 }
 
-function readChallenges() {
-  return firebase.database().ref('/challenge/challenge1/').once('value').then(function(snapshot) {
-    console.log(snapshot.val().name);
-    // ...
-  });
-}
-
-$(function() {
+$(function () {
     if (firebase.auth().currentUser) {
         updateUserInfo(firebase.auth().currentUser);
-        $('#welcome').hide();
-        $('#challengeList').show();
+        readChallenges();
     } else {
         $("#loginButton").on("click", signIn);
         checkUserLogin();
