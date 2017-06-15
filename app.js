@@ -1,6 +1,5 @@
 var database = firebase.database();
 
-
 function signIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function (result) {
@@ -66,10 +65,18 @@ function readChallenges() {
             list.append(challengeJoinEntry(entry.val(), entry.key))
         });
         $('.join-challenge').on("click", function (event) {
-            var challengeId = $(event.target).data("challengeid");
-            console.log("join challenge room", challengeId);
+            var challengeRoomId = $(event.target).data("challengeid");
+            joinChallengeRoom(challengeRoomId);
         });
     });
+}
+
+function joinChallengeRoom(challengeRoomId) {
+    var user = firebase.auth().currentUser;
+    database.ref("/challengeRoom/" + challengeRoomId + "/players/" + user.uid)
+        .set({displayName: user.displayName}, function () {
+            showChallengeRoom(challengeRoomId);
+        });
 }
 
 function checkUserLogin() {
@@ -94,11 +101,11 @@ function showChallengeRoom(challengeRoomId) {
     $("#challengeList").hide();
     $("#challengeRoom").show();
 
-    database.ref('/challengeRoom/'+challengeRoomId).on('value', function (snapshot) {
+    database.ref('/challengeRoom/' + challengeRoomId).on('value', function (snapshot) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
 
-            updatePlayers(challengeRoom);
+            updatePlayers(challengeRoomId);
         } else {
             // leave room
         }
@@ -106,6 +113,7 @@ function showChallengeRoom(challengeRoomId) {
 }
 
 function updatePlayers(challengeRoom) {
+
 
 }
 
