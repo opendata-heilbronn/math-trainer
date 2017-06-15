@@ -8,31 +8,25 @@
     background-image: linear-gradient(180deg, #02029b 1%, #040492 100%);
     display: flex;
     justify-content: space-between;
-
-
-}
-#currentuser{
-
-  font-family: orbitron;
-  font-size: 20px;
-  font-weight: bold;
-  color: rgb(255, 255, 255);
-  margin-right: 16px;
-  margin-top: 16px;
-
-}
-#title{
-
-  font-family: orbitron;
-  font-size: 50px;
-  font-weight: bold;
-  color: rgb(255, 255, 255);
-  margin-left: 16px;
-  margin-top: 16px;
-
-
 }
 
+#currentuser {
+    font-family: orbitron;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin-right: 16px;
+    margin-top: 16px;
+}
+
+#title {
+    font-family: orbitron;
+    font-size: 50px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin-left: 16px;
+    margin-top: 16px;
+}
 
 #outcome {}
 
@@ -41,7 +35,6 @@ body {
     background-image: linear-gradient(180deg, #0808a1 1%, #161650 100%);
     font-family: orbitron;
     color: #fff;
-
 }
 
 body, html {
@@ -77,13 +70,13 @@ body, html {
     transition: all 1s;
 }
 
+transition: all 1s;
 .output {
     font-size: 30px;
     font-weight: bold;
     color: rgb(255, 255, 255);
     justify-content: center;
     align-items: center;
-    transition: all 1s;
     text-align: center;
 }
 
@@ -100,10 +93,12 @@ body, html {
     width: 50%;
 }
 
-.challenge-entry {
-
-}
+.challenge-entry {}
 
 .challenge-name {
     font-weight: bold;
+}
+
+h3 {
+    font-size: 30px;
 }

@@ -65,7 +65,7 @@ function readChallenges() {
         snapshot.forEach(function(entry) {
 
             if (user.uid == entry.val().createdById) {
-                console.log("das is dein room");
+
                 showButton = false;
             } else {
                 showButton = true;
@@ -122,7 +122,9 @@ function startCountdownForChallengeId(challengeRoomId) {
 }
 
 function beginWithChallenge(challengeRoomId) {
-    console.log("jetzt gehts los!");
+      $("#challengeRoom").hide();
+      $("#gameView").show();
+      startGame();
 }
 function showChallengeRoom(challengeRoomId) {
     var user = firebase.auth().currentUser;
