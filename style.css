@@ -6,20 +6,26 @@
 
 #top-bar {
     background-image: linear-gradient(180deg, #02029b 1%, #040492 100%);
-    width: 100vw;
-    height: 50px;
+    display: flex;
+    justify-content: space-between;
+
 
 }
+#currentuser{
 
+  font-family: orbitron;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+
+}
 #title{
 
   font-family: orbitron;
   font-size: 50px;
   font-weight: bold;
   color: rgb(255, 255, 255);
-  margin-left: 25px;
-  margin-top: 35px;
-  margin-bottom: 5px;
+
 
 }
 
