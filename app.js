@@ -35,7 +35,7 @@ function signIn() {
 
 function updateUserInfo(user) {
     console.log("user: ", user);
-    $("#currentUser").text(user.displayName);
+    $("#currentUser").text('Eingeloggt als:   ' + user.displayName);
 }
 
 function startChallengeWithId(challengeId) {
