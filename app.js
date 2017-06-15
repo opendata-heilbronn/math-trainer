@@ -65,8 +65,8 @@ function readChallenges() {
             list.append(challengeJoinEntry(entry.val(), entry.key))
         });
         $('.join-challenge').on("click", function (event) {
-            var challengeRoomId = $(event.target).data("challengeid");
-            joinChallengeRoom(challengeRoomId);
+            var challengeId = $(event.target).data("challengeid");
+            console.log("join challenge room", challengeId);
         });
     });
 }
@@ -98,6 +98,8 @@ function checkUserLogin() {
 }
 
 function showChallengeRoom(challengeRoomId) {
+    var user = firebase.auth().currentUser;
+
     $("#challengeList").hide();
     $("#challengeRoom").show();
 
@@ -106,9 +108,24 @@ function showChallengeRoom(challengeRoomId) {
             var challengeRoom = snapshot.val();
 
             updatePlayers(challengeRoomId);
+                if (user.uid ==  challengeRoom.createdById){
+                  $("#crStart").show();
+                  $("#crQuit").hide();
+                  $("#crCancel").show();
+
+                } else{
+                  $("#crCancel").show();
+                  $("#crStart").hide();
+                  $("#crQuit").hide();
+                }
+
+            updatePlayers(challengeRoom);
         } else {
             // leave room
         }
+
+
+
     });
 }
 
