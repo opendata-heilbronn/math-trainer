@@ -73,6 +73,22 @@ function checkUserLogin() {
 
 }
 
+
+function createChallengeRoom(challange) {
+    var creator = firebase.auth().currentUser.displayName;
+    return firebase.database().ref('/challengeRoom/').push().set({
+
+    createdBy: creator,
+    maxMultiplier: challange.maxMultiplier,
+    maxQuestions: challange.maxQuestions,
+    maxTime: challange.maxTime,
+    name: challange.name
+
+    });
+
+}
+
+//alle fuunktionen davor
 $(function () {
     if (firebase.auth().currentUser) {
         updateUserInfo(firebase.auth().currentUser);
