@@ -94,14 +94,16 @@ function checkUserLogin() {
 
 
 function createChallengeRoom(challange) {
-    var creator = firebase.auth().currentUser.displayName;
-    return firebase.database().ref('/challengeRoom/').push().set({
-
-    createdBy: creator,
+    var user = firebase.auth().currentUser;
+    var questions = createQuestions(challange.maxQuestions, challange.maxMultiplier);
+    firebase.database().ref('/challengeRoom/').push().set({
+    createdById : user.uid,
+    createdBy: user.displayName,
     maxMultiplier: challange.maxMultiplier,
     maxQuestions: challange.maxQuestions,
     maxTime: challange.maxTime,
-    name: challange.name
+    name: challange.name,
+        questions:questions
 
     });
 
