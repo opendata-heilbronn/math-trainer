@@ -89,9 +89,15 @@ function joinChallengeRoom(challengeRoomId) {
 }
 
   function backToChallengeRoom(){
+    database.ref('/challengeRoom/' + challengeRoomId + '/' ).once('value', function(snapshot) {
+        var currentChallenge = snapshot.val();
+        database.ref('/statistics/' + challengeRoomId + '/challengeRoom').set(currentChallenge, function(){
+          database.ref('/challengeRoom/' + challengeRoomId +).remove();
+        });
     $("#challengeList").show();
     $("#gameView").hide();
     $("#outcome").hide()
+
   }
 
 function checkUserLogin() {
@@ -138,6 +144,7 @@ function showChallengeRoom(challengeRoomId) {
     $("#challengeList").hide();
     $("#challengeRoom").show();
 
+
     database.ref('/challengeRoom/' + challengeRoomId).on('value', function(snapshot) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
@@ -163,6 +170,15 @@ function showChallengeRoom(challengeRoomId) {
                 $("#crStart").hide();
                 $("#crQuit").show();
             }
+            $("#crQuit").on("click", function () {
+              $("#challengeList").show();
+              $("#challengeRoom").hide();
+              database.ref('/challengeRoom/' + challengeRoomId + '/players/' + user.uid).remove();
+
+
+            });
+
+
             $("#crStart").on("click", function () {
                 startCountdownForChallengeId(challengeRoomId);
             });
@@ -202,6 +218,8 @@ function createChallengeRoom(challange) {
 
 
 }
+
+
 
 //alle fuunktionen davor
 $(function() {
