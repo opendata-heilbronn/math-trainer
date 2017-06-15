@@ -48,16 +48,26 @@ function startChallengeWithId(challengeId) {
 function readChallenges() {
     $('#welcome').hide();
     $('#challengeList').show();
-    return firebase.database().ref('/challenge/').on('value', function (snapshot) {
+    firebase.database().ref('/challenge/').on('value', function (snapshot) {
         var list = $("#possibleChallenges");
         list.empty();
         snapshot.forEach(function (entry) {
-            console.log(entry.val());
             list.append(challengeEntry(entry.val(), entry.key))
         });
         $('.start-challenge').on("click", function (event) {
             var challengeId = $(event.target).data("challengeid");
             startChallengeWithId(challengeId);
+        });
+    });
+    firebase.database().ref('/challengeRoom/').on('value', function (snapshot) {
+        var list = $("#activeChallenges");
+        list.empty();
+        snapshot.forEach(function (entry) {
+            list.append(challengeJoinEntry(entry.val(), entry.key))
+        });
+        $('.join-challenge').on("click", function (event) {
+            var challengeId = $(event.target).data("challengeid");
+            console.log("join challenge room", challengeId);
         });
     });
 }
