@@ -1,3 +1,6 @@
+var database = firebase.database();
+
+
 function signIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -34,6 +37,7 @@ function signIn() {
 function updateUserInfo(user) {
     console.log("user: ", user);
     $("#currentUser").text(user.displayName);
+    readChallenges();
 }
 
 function checkUserLogin() {
@@ -56,6 +60,13 @@ function checkUserLogin() {
 
 
 
+}
+
+function readChallenges() {
+  return firebase.database().ref('/challenge/challenge1/').once('value').then(function(snapshot) {
+    console.log(snapshot.val().name);
+    // ...
+  });
 }
 
 $(function() {
