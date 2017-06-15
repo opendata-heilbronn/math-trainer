@@ -88,6 +88,12 @@ function joinChallengeRoom(challengeRoomId) {
         });
 }
 
+  function backToChallengeRoom(){
+    $("#challengeList").show();
+    $("#gameView").hide();
+    $("#outcome").hide()
+  }
+
 function checkUserLogin() {
 
     var accessToken = localStorage.getItem("accessToken");

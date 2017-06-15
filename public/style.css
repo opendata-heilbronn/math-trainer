@@ -28,7 +28,10 @@
     margin-top: 16px;
 }
 
-#outcome {}
+#outcome {
+  margin-left: 16px;
+  
+}
 
 body {
     /* background: #161650; */
