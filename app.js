@@ -2,7 +2,7 @@ var database = firebase.database();
 
 function signIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function (result) {
+    firebase.auth().signInWithPopup(provider).then(function(result) {
         var accessToken = result.credential.accessToken;
         var idToken = result.credential.idToken;
 
@@ -18,7 +18,7 @@ function signIn() {
         var user = result.user;
         updateUserInfo(user);
         readChallenges();
-    }).catch(function (error) {
+    }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -38,33 +38,43 @@ function updateUserInfo(user) {
 }
 
 function startChallengeWithId(challengeId) {
-    database.ref('/challenge/' + challengeId).once("value", function (snapshot) {
+    database.ref('/challenge/' + challengeId).once("value", function(snapshot) {
         createChallengeRoom(snapshot.val());
     });
 }
 
 
 function readChallenges() {
+    var user = firebase.auth().currentUser;
+    var showButton;
     $('#welcome').hide();
     $('#challengeList').show();
-    firebase.database().ref('/challenge/').on('value', function (snapshot) {
+    firebase.database().ref('/challenge/').on('value', function(snapshot) {
         var list = $("#possibleChallenges");
         list.empty();
-        snapshot.forEach(function (entry) {
+        snapshot.forEach(function(entry) {
             list.append(challengeEntry(entry.val(), entry.key))
         });
-        $('.start-challenge').on("click", function (event) {
+        $('.start-challenge').on("click", function(event) {
             var challengeId = $(event.target).data("challengeid");
             startChallengeWithId(challengeId);
         });
     });
-    firebase.database().ref('/challengeRoom/').on('value', function (snapshot) {
+    firebase.database().ref('/challengeRoom/').on('value', function(snapshot) {
         var list = $("#activeChallenges");
         list.empty();
-        snapshot.forEach(function (entry) {
-            list.append(challengeJoinEntry(entry.val(), entry.key))
+        snapshot.forEach(function(entry) {
+
+            if (user.uid == entry.val().createdById) {
+                console.log("das is dein room");
+                showButton = false;
+            } else {
+                showButton = true;
+            }
+            list.append(challengeJoinEntry(entry.val(), entry.key, showButton))
         });
-        $('.join-challenge').on("click", function (event) {
+
+        $('.join-challenge').on("click", function(event) {
             var challengeRoomId = $(event.target).data("challengeid");
             joinChallengeRoom(challengeRoomId);
         });
@@ -74,7 +84,9 @@ function readChallenges() {
 function joinChallengeRoom(challengeRoomId) {
     var user = firebase.auth().currentUser;
     database.ref("/challengeRoom/" + challengeRoomId + "/players/" + user.uid)
-        .set({displayName: user.displayName}, function () {
+        .set({
+            displayName: user.displayName
+        }, function() {
             showChallengeRoom(challengeRoomId);
         });
 }
@@ -88,10 +100,10 @@ function checkUserLogin() {
         console.log("sie sind Angemeldet");
         var credential = firebase.auth.GoogleAuthProvider.credential(
             idToken, accessToken);
-        firebase.auth().signInWithCredential(credential).then(function (user) {
+        firebase.auth().signInWithCredential(credential).then(function(user) {
             updateUserInfo(user);
             readChallenges();
-        }).catch(function (error) {
+        }).catch(function(error) {
             console.error(error);
         });
     }
@@ -103,7 +115,7 @@ function showChallengeRoom(challengeRoomId) {
     $("#challengeList").hide();
     $("#challengeRoom").show();
 
-    database.ref('/challengeRoom/' + challengeRoomId).on('value', function (snapshot) {
+    database.ref('/challengeRoom/' + challengeRoomId).on('value', function(snapshot) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
 
@@ -148,7 +160,7 @@ function createChallengeRoom(challange) {
         name: challange.name,
         questions: questions
 
-    }, function () {
+    }, function() {
         showChallengeRoom(challengeRoom.key);
     });
 
@@ -156,7 +168,7 @@ function createChallengeRoom(challange) {
 }
 
 //alle fuunktionen davor
-$(function () {
+$(function() {
     if (firebase.auth().currentUser) {
         updateUserInfo(firebase.auth().currentUser);
         readChallenges();
