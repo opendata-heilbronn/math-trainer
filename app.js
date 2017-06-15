@@ -28,8 +28,6 @@ function signIn() {
         var credential = error.credential;
         // ...
     });
-
-
 }
 
 function updateUserInfo(user) {
@@ -121,10 +119,12 @@ function startCountdownForChallengeId(challengeRoomId) {
 
 }
 
-function beginWithChallenge(challengeRoomId) {
+
+function beginWithChallenge(challengeRoomId, challengeRoom) {
       $("#challengeRoom").hide();
       $("#gameView").show();
-      startGame();
+      startGame(challengeRoomId, challengeRoom.questions);
+
 }
 function showChallengeRoom(challengeRoomId) {
     var user = firebase.auth().currentUser;
@@ -140,7 +140,7 @@ function showChallengeRoom(challengeRoomId) {
                 $("#crCountdown").text("Es geht los in "+challengeRoom["countdown"]+" Sekunden");
                 $("#crCountdown").show();
                 if (challengeRoom["countdown"] == 0) {
-                    beginWithChallenge(challengeRoomId);
+                    beginWithChallenge(challengeRoomId, challengeRoom);
                 }
             } else {
                 $("#crCountdown").hide();
