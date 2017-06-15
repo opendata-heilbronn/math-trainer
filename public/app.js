@@ -90,15 +90,16 @@ function editChallengeRoom(challengeRoomId) {
 }
 
 function backToChallengeRoom() {
-    database.ref('/challengeRoom/' + challengeRoomId + '/' ).once('value', function(snapshot) {
+    database.ref('/challengeRoom/' + challengeRoomId + '/').once('value', function (snapshot) {
         var currentChallenge = snapshot.val();
-        database.ref('/statistics/' + challengeRoomId + '/challengeRoom').set(currentChallenge, function(){
-          database.ref('/challengeRoom/' + challengeRoomId +).remove();
+        database.ref('/statistics/' + challengeRoomId + '/challengeRoom').set(currentChallenge, function () {
+            database.ref('/challengeRoom/' + challengeRoomId).remove();
         });
-    $("#challengeList").show();
-    $("#gameView").hide();
-    $("#outcome").hide()
-  }
+        $("#challengeList").show();
+        $("#gameView").hide();
+        $("#outcome").hide()
+    });
+}
 
 function checkUserLogin() {
     var accessToken = localStorage.getItem("accessToken");
@@ -116,6 +117,7 @@ function checkUserLogin() {
         });
     }
 }
+
 function startCountdownForChallengeId(challengeRoomId) {
     var countdown = 10;
     var timer = setInterval(function () {
@@ -139,6 +141,7 @@ function cancelChallengeRoom(challengeRoomId) {
     $("#challengeRoom").hide();
     readChallenges();
 }
+
 function showChallengeRoom(challengeRoomId) {
     var user = firebase.auth().currentUser;
 
@@ -171,9 +174,9 @@ function showChallengeRoom(challengeRoomId) {
                 $("#crQuit").show();
             }
             $("#crQuit").on("click", function () {
-              $("#challengeList").show();
-              $("#challengeRoom").hide();
-              database.ref('/challengeRoom/' + challengeRoomId + '/players/' + user.uid).remove();
+                $("#challengeList").show();
+                $("#challengeRoom").hide();
+                database.ref('/challengeRoom/' + challengeRoomId + '/players/' + user.uid).remove();
             });
             $("#crStart").on("click", function () {
                 startCountdownForChallengeId(challengeRoomId);
