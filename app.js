@@ -96,7 +96,9 @@ function checkUserLogin() {
 function createChallengeRoom(challange) {
     var user = firebase.auth().currentUser;
     var questions = createQuestions(challange.maxQuestions, challange.maxMultiplier);
-    firebase.database().ref('/challengeRoom/').push().set({
+    var challengeRoom = database.ref('/challengeRoom/').push();
+
+    challengeRoom.set({
     createdById : user.uid,
     createdBy: user.displayName,
     maxMultiplier: challange.maxMultiplier,
@@ -106,6 +108,7 @@ function createChallengeRoom(challange) {
         questions:questions
 
     });
+
 
 }
 
