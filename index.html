@@ -2,7 +2,7 @@
 
 <head>
 	<title>Math-trainer</title>
-
+	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
 	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 	<script>
@@ -72,23 +72,15 @@
 
 	<div id="gameView" style="display: none">
 		<div class="container">
-
-
 			<link href="style.css" rel="stylesheet">
 
-
-
 			<div id="question" class="question"></div>
-
 
 			<form onsubmit="onButtonClick(event)" style="text-align: center">
 				<input id="answer" class="answer" autofocus></input>
 				<p><button id="button" class="button">check</button></p>
 			</form>
 
-
-
-			<div id="output" class="output"></div>
 		</div>
 
 
@@ -115,6 +107,8 @@
 		<h1>Dein Durchschnitt: <span id="yourAverage"></span> Sekunden</h1><br>
 		<h1>Deine Ergebnisbilanz: <span id="correctAnswersInPercent"></span>%</h1><br>
 		<button>Erneut spielen</button>
+
+		<button>Spiel beenden</button>
 
 	</div>
 
