@@ -114,9 +114,9 @@ function showChallengeRoom(challengeRoomId) {
                 $("#crCancel").show();
 
             } else {
-                $("#crCancel").show();
+                $("#crCancel").hide();
                 $("#crStart").hide();
-                $("#crQuit").hide();
+                $("#crQuit").show();
             }
 
             updatePlayers(challengeRoom);
