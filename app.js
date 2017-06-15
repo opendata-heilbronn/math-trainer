@@ -65,8 +65,8 @@ function readChallenges() {
             list.append(challengeJoinEntry(entry.val(), entry.key))
         });
         $('.join-challenge').on("click", function (event) {
-            var challengeId = $(event.target).data("challengeid");
-            console.log("join challenge room", challengeId);
+            var challengeRoomId = $(event.target).data("challengeid");
+            joinChallengeRoom(challengeRoomId);
         });
     });
 }
@@ -108,22 +108,21 @@ function showChallengeRoom(challengeRoomId) {
             var challengeRoom = snapshot.val();
 
             updatePlayers(challengeRoomId);
-                if (user.uid ==  challengeRoom.createdById){
-                  $("#crStart").show();
-                  $("#crQuit").hide();
-                  $("#crCancel").show();
+            if (user.uid == challengeRoom.createdById) {
+                $("#crStart").show();
+                $("#crQuit").hide();
+                $("#crCancel").show();
 
-                } else{
-                  $("#crCancel").show();
-                  $("#crStart").hide();
-                  $("#crQuit").hide();
-                }
+            } else {
+                $("#crCancel").show();
+                $("#crStart").hide();
+                $("#crQuit").hide();
+            }
 
             updatePlayers(challengeRoom);
         } else {
             // leave room
         }
-
 
 
     });
