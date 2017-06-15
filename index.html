@@ -6,18 +6,16 @@
 	<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
 	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 	<script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyDOZaP9R_5luc0iosGyoOSLzGTHUO6QPls",
-            authDomain: "math-trainer-4f408.firebaseapp.com",
-            databaseURL: "https://math-trainer-4f408.firebaseio.com",
-            projectId: "math-trainer-4f408",
-            storageBucket: "math-trainer-4f408.appspot.com",
-            messagingSenderId: "709853669041"
-        };
-        firebase.initializeApp(config);
-        
-
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyDOZaP9R_5luc0iosGyoOSLzGTHUO6QPls",
+			authDomain: "math-trainer-4f408.firebaseapp.com",
+			databaseURL: "https://math-trainer-4f408.firebaseio.com",
+			projectId: "math-trainer-4f408",
+			storageBucket: "math-trainer-4f408.appspot.com",
+			messagingSenderId: "709853669041"
+		};
+		firebase.initializeApp(config);
 	</script>
 
 </head>
@@ -32,16 +30,23 @@
 
 	<div id="welcome">
 
-		Willkommen beim Math Trainer.
-		Bitte mit Google einloggen.
+		Willkommen beim Math Trainer. Bitte mit Google einloggen.
 
 		<button id="loginButton">Login</button>
 
 	</div>
 
 	<div id="challengeList" style="display: none">
-		<div id="possibleChallenges" class="challenge-list"></div>
-		<div id="activeChallenges" class="challenge-list"></div>
+		<div class="challenge-list">
+			<h3>Challenge Übersicht:</h3>
+			<div id="possibleChallenges"></div>
+		</div>
+
+		<div class="challenge-list">
+			<h3>Vorhandene Challengerooms: </h3>
+			<div id="activeChallenges"></div>
+		</div>
+
 	</div>
 
 
@@ -94,14 +99,14 @@
 
 
 
-		</div>
+	</div>
 
 
-		<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-    <script src="ui.js"></script>
-    <script src="game.js"></script>
-    <script src="script.js"></script>
-    <script src="app.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+	<script src="ui.js"></script>
+	<script src="game.js"></script>
+	<script src="script.js"></script>
+	<script src="app.js"></script>
 
 
 </body>
