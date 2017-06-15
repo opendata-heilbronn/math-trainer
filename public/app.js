@@ -2,7 +2,7 @@ var database = firebase.database();
 
 function signIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
+    firebase.auth().signInWithPopup(provider).then(function (result) {
         var accessToken = result.credential.accessToken;
         var idToken = result.credential.idToken;
 
@@ -18,7 +18,7 @@ function signIn() {
         var user = result.user;
         updateUserInfo(user);
         readChallenges();
-    }).catch(function(error) {
+    }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -36,44 +36,41 @@ function updateUserInfo(user) {
 }
 
 function startChallengeWithId(challengeId) {
-    database.ref('/challenge/' + challengeId).once("value", function(snapshot) {
+    database.ref('/challenge/' + challengeId).once("value", function (snapshot) {
         createChallengeRoom(snapshot.val());
     });
 }
 
 function readChallenges() {
     var user = firebase.auth().currentUser;
-    var showButton;
+    var isOwner;
     $('#welcome').hide();
     $('#challengeList').show();
-    firebase.database().ref('/challenge/').on('value', function(snapshot) {
+    firebase.database().ref('/challenge/').on('value', function (snapshot) {
         var list = $("#possibleChallenges");
         list.empty();
-        snapshot.forEach(function(entry) {
+        snapshot.forEach(function (entry) {
             list.append(challengeEntry(entry.val(), entry.key))
         });
-        $('.start-challenge').on("click", function(event) {
+        $('.start-challenge').on("click", function (event) {
             var challengeId = $(event.target).data("challengeid");
             startChallengeWithId(challengeId);
         });
     });
-    firebase.database().ref('/challengeRoom/').on('value', function(snapshot) {
+    firebase.database().ref('/challengeRoom/').on('value', function (snapshot) {
         var list = $("#activeChallenges");
         list.empty();
-        snapshot.forEach(function(entry) {
-
-            if (user.uid == entry.val().createdById) {
-
-                showButton = false;
-            } else {
-                showButton = true;
-            }
-            list.append(challengeJoinEntry(entry.val(), entry.key, showButton))
+        snapshot.forEach(function (entry) {
+            isOwner = user.uid == entry.val().createdById;
+            list.append(challengeJoinEntry(entry.val(), entry.key, isOwner))
         });
-
-        $('.join-challenge').on("click", function(event) {
+        $('.join-challenge').on("click", function (event) {
             var challengeRoomId = $(event.target).data("challengeid");
             joinChallengeRoom(challengeRoomId);
+        });
+        $('.edit-challenge').on("click", function (event) {
+            var challengeRoomId = $(event.target).data("challengeid");
+            editChallengeRoom(challengeRoomId);
         });
     });
 }
@@ -83,19 +80,22 @@ function joinChallengeRoom(challengeRoomId) {
     database.ref("/challengeRoom/" + challengeRoomId + "/players/" + user.uid)
         .set({
             displayName: user.displayName
-        }, function() {
+        }, function () {
             showChallengeRoom(challengeRoomId);
         });
 }
 
-  function backToChallengeRoom(){
+function editChallengeRoom(challengeRoomId) {
+    showChallengeRoom(challengeRoomId);
+}
+
+function backToChallengeRoom() {
     $("#challengeList").show();
     $("#gameView").hide();
     $("#outcome").hide()
-  }
+}
 
 function checkUserLogin() {
-
     var accessToken = localStorage.getItem("accessToken");
     var idToken = localStorage.getItem("idToken");
 
@@ -103,10 +103,10 @@ function checkUserLogin() {
         console.log("sie sind Angemeldet");
         var credential = firebase.auth.GoogleAuthProvider.credential(
             idToken, accessToken);
-        firebase.auth().signInWithCredential(credential).then(function(user) {
+        firebase.auth().signInWithCredential(credential).then(function (user) {
             updateUserInfo(user);
             readChallenges();
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.error(error);
         });
     }
@@ -121,16 +121,18 @@ function startCountdownForChallengeId(challengeRoomId) {
             clearInterval(timer)
         }
     }, 1000);
-
-
 }
 
-
 function beginWithChallenge(challengeRoomId, challengeRoom) {
-      $("#challengeRoom").hide();
-      $("#gameView").show();
-      startGame(challengeRoomId, challengeRoom.questions);
+    $("#challengeRoom").hide();
+    $("#gameView").show();
+    startGame(challengeRoomId, challengeRoom.questions);
+}
 
+function cancelChallengeRoom(challengeRoomId) {
+    database.ref("/challengeRoom/" + challengeRoomId).remove();
+    $("#challengeRoom").hide();
+    readChallenges();
 }
 function showChallengeRoom(challengeRoomId) {
     var user = firebase.auth().currentUser;
@@ -138,12 +140,13 @@ function showChallengeRoom(challengeRoomId) {
     $("#challengeList").hide();
     $("#challengeRoom").show();
 
-    database.ref('/challengeRoom/' + challengeRoomId).on('value', function(snapshot) {
+    updatePlayers(challengeRoomId);
+    database.ref('/challengeRoom/' + challengeRoomId).on('value', function (snapshot) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
 
             if (challengeRoom["countdown"] !== undefined) {
-                $("#crCountdown").text("Es geht los in "+challengeRoom["countdown"]+" Sekunden");
+                $("#crCountdown").text("Es geht los in " + challengeRoom["countdown"] + " Sekunden");
                 $("#crCountdown").show();
                 if (challengeRoom["countdown"] == 0) {
                     beginWithChallenge(challengeRoomId, challengeRoom);
@@ -152,7 +155,6 @@ function showChallengeRoom(challengeRoomId) {
                 $("#crCountdown").hide();
             }
 
-            updatePlayers(challengeRoomId);
             if (user.uid == challengeRoom.createdById) {
                 $("#crStart").show();
                 $("#crQuit").hide();
@@ -166,21 +168,26 @@ function showChallengeRoom(challengeRoomId) {
             $("#crStart").on("click", function () {
                 startCountdownForChallengeId(challengeRoomId);
             });
+            $("#crCancel").on("click", function () {
+                cancelChallengeRoom(challengeRoomId);
+            });
 
-            updatePlayers(challengeRoom);
         } else {
-            // leave room
+            $("#challengeRoom").hide();
+            readChallenges();
         }
-
-
     });
 }
 
 function updatePlayers(challengeRoom) {
-
-
+    database.ref('/challengeRoom/' + challengeRoomId + "/player").on('value', function (snapshot) {
+        var list = $("#challengeRoomPlayers");
+        list.empty();
+        snapshot.forEach(function (player) {
+            list.append(playerEntry(player));
+        })
+    });
 }
-
 
 function createChallengeRoom(challange) {
     var user = firebase.auth().currentUser;
@@ -196,15 +203,13 @@ function createChallengeRoom(challange) {
         name: challange.name,
         questions: questions
 
-    }, function() {
+    }, function () {
         showChallengeRoom(challengeRoom.key);
     });
-
-
 }
 
 //alle fuunktionen davor
-$(function() {
+$(function () {
     if (firebase.auth().currentUser) {
         updateUserInfo(firebase.auth().currentUser);
         readChallenges();
