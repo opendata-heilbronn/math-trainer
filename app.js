@@ -17,9 +17,8 @@ function signIn() {
 
         localStorage.setItem("provider", provider.prviderId);
         var user = result.user;
-        updateUserInfo(user)
-        $('#welcome').hide();
-        $('#challengeList').show();
+        updateUserInfo(user);
+        readChallenges();
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -39,6 +38,12 @@ function updateUserInfo(user) {
     $("#currentUser").text(user.displayName);
 }
 
+function startChallengeWithId(challengeId) {
+    database.ref('/challenge/' + challengeId).once("value", function (snapshot) {
+        createChallengeRoom(snapshot.val());
+    });
+}
+
 
 function readChallenges() {
     $('#welcome').hide();
@@ -48,7 +53,11 @@ function readChallenges() {
         list.empty();
         snapshot.forEach(function (entry) {
             console.log(entry.val());
-            list.append(challengeEntry(entry.val()))
+            list.append(challengeEntry(entry.val(), entry.key))
+        });
+        $('.start-challenge').on("click", function (event) {
+            var challengeId = $(event.target).data("challengeid");
+            startChallengeWithId(challengeId);
         });
     });
 }
