@@ -88,6 +88,11 @@ function checkUserLogin() {
             console.error(error);
         });
     }
+}
+
+function showChallengeRoom(challengeRoomId) {
+    $("#challengeList").hide();
+    $("#challengeRoom").show();
 
 
 }
@@ -99,14 +104,16 @@ function createChallengeRoom(challange) {
     var challengeRoom = database.ref('/challengeRoom/').push();
 
     challengeRoom.set({
-    createdById : user.uid,
-    createdBy: user.displayName,
-    maxMultiplier: challange.maxMultiplier,
-    maxQuestions: challange.maxQuestions,
-    maxTime: challange.maxTime,
-    name: challange.name,
-        questions:questions
+        createdById: user.uid,
+        createdBy: user.displayName,
+        maxMultiplier: challange.maxMultiplier,
+        maxQuestions: challange.maxQuestions,
+        maxTime: challange.maxTime,
+        name: challange.name,
+        questions: questions
 
+    }, function () {
+        showChallengeRoom(challengeRoom.key);
     });
 
 
