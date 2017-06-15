@@ -91,6 +91,8 @@ function checkUserLogin() {
 }
 
 function showChallengeRoom(challengeRoomId) {
+    var user = firebase.auth().currentUser;
+
     $("#challengeList").hide();
     $("#challengeRoom").show();
 
@@ -98,10 +100,24 @@ function showChallengeRoom(challengeRoomId) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
 
+                if (user.uid ==  challengeRoom.createdById){
+                  $("#crStart").show();
+                  $("#crQuit").hide();
+                  $("#crCancel").show();
+
+                } else{
+                  $("#crCancel").show();
+                  $("#crStart").hide();
+                  $("#crQuit").hide();
+                }
+
             updatePlayers(challengeRoom);
         } else {
             // leave room
         }
+
+
+
     });
 }
 
