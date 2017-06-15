@@ -79,3 +79,15 @@ body, html {
 #results td {
     padding: 5px;
 }
+
+.challenge-list {
+    width: 50%;
+}
+
+.challenge-entry {
+
+}
+
+.challenge-name {
+    font-weight: bold;
+}
