@@ -195,13 +195,13 @@ function showChallengeRoom(challengeRoomId) {
 }
 
 function updatePlayers(challengeRoomId) {
-    database.ref('/challengeRoom/' + challengeRoomId + "/players").on('value', function (snapshot) {
-        var list = $("#challengeRoomPlayers");
-        list.empty();
-        snapshot.forEach(function (player) {
-            list.append(playerEntry(player.val()));
-        })
-    });
+  database.ref('/challengeRoom/' + challengeRoomId + "/players").on('value', function(snapshot) {
+    var list = $("#challengeRoomPlayers");
+    list.empty();
+    snapshot.forEach(function(player) {
+      list.append(playerEntry(player.val()));
+    })
+  });
 }
 
 function createChallengeRoom(challange) {
