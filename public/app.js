@@ -152,6 +152,8 @@ function showChallengeRoom(challengeRoomId) {
     database.ref('/challengeRoom/' + challengeRoomId).on('value', function (snapshot) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
+            $("#crChallenge").text(challengeRoom.name);
+            $("#crCreatedBy").text("Erstellt von "+challengeRoom.createdBy);
 
             if (challengeRoom["countdown"] !== undefined) {
                 $("#crCountdown").text("Es geht los in " + challengeRoom["countdown"] + " Sekunden");
@@ -192,12 +194,12 @@ function showChallengeRoom(challengeRoomId) {
     });
 }
 
-function updatePlayers(challengeRoom) {
-    database.ref('/challengeRoom/' + challengeRoomId + "/player").on('value', function (snapshot) {
+function updatePlayers(challengeRoomId) {
+    database.ref('/challengeRoom/' + challengeRoomId + "/players").on('value', function (snapshot) {
         var list = $("#challengeRoomPlayers");
         list.empty();
         snapshot.forEach(function (player) {
-            list.append(playerEntry(player));
+            list.append(playerEntry(player.val()));
         })
     });
 }

@@ -87,6 +87,10 @@ transition: all 1s;
     padding: 5px;
 }
 
+#challengeRoom {
+    display: flex;
+}
+
 #challengeList {
     display: flex;
 }
@@ -102,6 +106,9 @@ transition: all 1s;
     font-weight: bold;
 }
 
+.info-box {
+    padding: 16px;
+}
 h3 {
     font-size: 30px;
 }

@@ -28,12 +28,11 @@
 	</div>
 	<hr>
 
-	<div id="welcome">
-
+	<div id="welcome" class="info-box">
 		Willkommen beim Math Trainer. Bitte mit Google einloggen.
-
+		<p>
 		<button id="loginButton">Login</button>
-
+		</p>
 	</div>
 
 	<div id="challengeList" style="display: none">
@@ -51,12 +50,12 @@
 
 	<div id="challengeRoom" style="display: none">
 
-		<div>
+		<div class="info-box">
+			<h4 id="crChallenge"></h4>
 			<div id="crCreatedBy">Created by:</div>
-			<div id="crChallenge">Challenge</div>
 			<div id="crCountdown">Cowndown</div>
 
-			<div>
+			<div style="margin-top: 32px">
 				<button id="crStart" style="display: none">Starten</button>
 				<button id="crCancel" style="display: none">Challenge beenden</button>
 				<button id="crQuit" style="display: none">Verlassen</button>
@@ -64,7 +63,10 @@
 			</div>
 		</div>
 
-		<div id="challengeRoomPlayers"></div>
+		<div class="info-box">
+			<h4>Weitere Spieler</h4>
+			<div id="challengeRoomPlayers"></div>
+		</div>
 
 	</div>
 
