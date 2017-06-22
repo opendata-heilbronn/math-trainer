@@ -10,6 +10,17 @@
     justify-content: space-between;
 }
 
+.challenge-entry {
+
+    padding: 5px;
+
+}
+
+.player-entry {
+
+    padding: 5px;
+
+}
 #currentuser {
     font-family: orbitron;
     font-size: 20px;
@@ -30,7 +41,7 @@
 
 #outcome {
   margin-left: 16px;
-  
+
 }
 
 body {
