@@ -4,12 +4,14 @@ var challengeRoomId;
 var question;
 var questionId = -1;
 var answer = document.getElementById("answer");
-var answerList = [];
+var correctAnswers = 0;
+
 
 function startGame(_challengeRoomId, _questions) {
     answerList = [];
     questionId = -1;
     totalTime = 0;
+    correctAnswers = 0;
     challengeRoomId = _challengeRoomId;
     questions = _questions;
     nextQuestion();
@@ -18,8 +20,6 @@ function startGame(_challengeRoomId, _questions) {
 
 function onButtonClick(e) {
     e.preventDefault();
-
-
     question.timeEnd = new Date();
     question.userInput = answer.value;
     question.expectedAnswer = question.num1 * question.num2;
@@ -32,12 +32,14 @@ function onButtonClick(e) {
 
     }
 
+    var user = firebase.auth().currentUser;
+    firebase.database().ref("/statistics/" + challengeRoomId + "/" + user.uid + "/answers/" + questionId).set(question);
 
-    answerList.push(question);
+
     answer.value = "";
     totalTime += question.timeDifference;
     var timeDifferenceSeconds = question.timeDifference / 1000;
-    var timeAverage = Math.round((totalTime / answerList.length) / 100) / 10;
+    var timeAverage = Math.round((totalTime / questions.length) / 100) / 10;
     document.getElementById("time").innerHTML = ("Du hast " + timeDifferenceSeconds +
     " Sekunden gebraucht! Durchschnitt: " + timeAverage + " Sekunden!");
     $("#results").append($("<tr><td>" + question.num1 + " * " + question.num2 +
@@ -45,32 +47,19 @@ function onButtonClick(e) {
         "</td><td>" + question.timeDifference + "</td><td>" + question.correct + "</td></tr>"));
 
 
-    if (answerList.length >= questions.length) {
-
+    if (questionId >= questions.length) {
         $("#gameView").hide();
         $("#outcome").show();
         $("#yourTime").text(totalTime / 1000);
         $("#yourAverage").text(timeAverage);
 
-        var correctAnswers = 0;
 
-        answerList.forEach(function (element) {
-            if (element.correct) {
-                correctAnswers++;
-            }
-        });
-
-        var correctAnswersInPercent = (correctAnswers / answerList.length) * 100;
+        var correctAnswersInPercent = (correctAnswers / questions.length) * 100;
         $("#correctAnswersInPercent").text(correctAnswersInPercent);
-        var user = firebase.auth().currentUser;
-        firebase.database().ref("/statistics/" + challengeRoomId + "/" + user.uid).set({
-
+        firebase.database().ref("/statistics/" + challengeRoomId + "/" + user.uid + "/data").set({
             correctAnswers: correctAnswers,
-            answers: answerList
-
+            totalTime: totalTime,
         })
-
-
     } else {
         nextQuestion();
     }
