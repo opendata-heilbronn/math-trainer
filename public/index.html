@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
 	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
 	<script>
 		// Initialize Firebase
 		var config = {
@@ -76,10 +78,11 @@
 		<div class="container">
 			<link href="style.css" rel="stylesheet">
 
+			<div id="questionNo" class="question-no"></div>
 			<div id="question" class="question"></div>
 
 			<form onsubmit="onButtonClick(event)" style="text-align: center">
-				<input id="answer" class="answer" autofocus></input>
+				<input id="answer" class="answer" autofocus autocomplete="off"></input>
 				<p><button id="button" class="button">check</button></p>
 			</form>
 

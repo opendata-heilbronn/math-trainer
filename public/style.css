@@ -58,14 +58,25 @@ body, html {
 
 .question {
     font-family: orbitron;
-    font-size: 30px;
+    font-size: 52px;
     font-weight: bold;
     color: rgb(255, 255, 255);
     justify-content: center;
     align-items: center;
     transition: all 1s;
     text-align: center;
-    margin-top: 50px
+    margin-top: 48px;
+    margin-bottom: 16px;
+}
+
+.question-no {
+    font-family: orbitron;
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 16px;
 }
 
 .button {
@@ -84,11 +95,17 @@ body, html {
     transition: all 1s;
 }
 
-transition: all 1s;
 .output {
     font-size: 30px;
     font-weight: bold;
     color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.time {
+    margin-top: 8px;
     justify-content: center;
     align-items: center;
     text-align: center;

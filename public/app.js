@@ -3,6 +3,7 @@ var database = firebase.database();
 function signIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function (result) {
+        console.log("credential: ", result.credential);
         var accessToken = result.credential.accessToken;
         var idToken = result.credential.idToken;
 
@@ -14,7 +15,7 @@ function signIn() {
         }
 
 
-        localStorage.setItem("provider", provider.prviderId);
+        localStorage.setItem("provider", provider.providerId);
         var user = result.user;
         updateUserInfo(user);
         readChallenges();
@@ -107,13 +108,24 @@ function checkUserLogin() {
 
     if (idToken || accessToken) {
         console.log("sie sind Angemeldet");
+        console.log("accessToken: ", accessToken);
+        console.log("idToken: ", idToken);
         var credential = firebase.auth.GoogleAuthProvider.credential(
             idToken, accessToken);
         firebase.auth().signInWithCredential(credential).then(function (user) {
             updateUserInfo(user);
             readChallenges();
         }).catch(function (error) {
-            console.error(error);
+            console.log(error);
+            console.log("Retry with access Token");
+            var credential = firebase.auth.GoogleAuthProvider.credential(null, accessToken);
+            firebase.auth().signInWithCredential(credential).then(function (user) {
+                updateUserInfo(user);
+                readChallenges();
+            }).catch(function (error) {
+                console.error(error);
+            });
+
         });
     }
 }
@@ -153,7 +165,7 @@ function showChallengeRoom(challengeRoomId) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
             $("#crChallenge").text(challengeRoom.name);
-            $("#crCreatedBy").text("Erstellt von "+challengeRoom.createdBy);
+            $("#crCreatedBy").text("Erstellt von " + challengeRoom.createdBy);
 
             if (challengeRoom["countdown"] !== undefined) {
                 $("#crCountdown").text("Es geht los in " + challengeRoom["countdown"] + " Sekunden");
@@ -195,13 +207,13 @@ function showChallengeRoom(challengeRoomId) {
 }
 
 function updatePlayers(challengeRoomId) {
-  database.ref('/challengeRoom/' + challengeRoomId + "/players").on('value', function(snapshot) {
-    var list = $("#challengeRoomPlayers");
-    list.empty();
-    snapshot.forEach(function(player) {
-      list.append(playerEntry(player.val()));
-    })
-  });
+    database.ref('/challengeRoom/' + challengeRoomId + "/players").on('value', function (snapshot) {
+        var list = $("#challengeRoomPlayers");
+        list.empty();
+        snapshot.forEach(function (player) {
+            list.append(playerEntry(player.val()));
+        })
+    });
 }
 
 function createChallengeRoom(challange) {
@@ -209,18 +221,23 @@ function createChallengeRoom(challange) {
     var questions = createQuestions(challange.maxQuestions, challange.maxMultiplier);
     var challengeRoom = database.ref('/challengeRoom/').push();
 
-    challengeRoom.set({
-        createdById: user.uid,
-        createdBy: user.displayName,
-        maxMultiplier: challange.maxMultiplier,
-        maxQuestions: challange.maxQuestions,
-        maxTime: challange.maxTime,
-        name: challange.name,
-        questions: questions
+    const players = {};
+    players[user.uid] = {displayName: user.displayName};
 
-    }, function () {
-        showChallengeRoom(challengeRoom.key);
-    });
+    challengeRoom.set({
+            createdById: user.uid,
+            createdBy: user.displayName,
+            maxMultiplier: challange.maxMultiplier,
+            maxQuestions: challange.maxQuestions,
+            maxTime: challange.maxTime,
+            name: challange.name,
+            questions: questions,
+            players: players
+        },
+        function () {
+            showChallengeRoom(challengeRoom.key);
+        }
+    );
 }
 
 //alle fuunktionen davor
