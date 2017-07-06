@@ -23,6 +23,9 @@ function startGame(_challengeRoomId, _questions) {
     timeStart = moment();
     updateCurrentTime();
     updateTimer = setInterval(updateCurrentTime, 1000);
+    $("#continueButton").hide();
+    $("#checkButton").show();
+
 }
 
 function updateCurrentTime() {
@@ -48,7 +51,6 @@ function onButtonClick(e) {
     } else {
         document.getElementById("output").innerHTML = (question.userInput + " Ist Falsch! Richtig wäre " + question.expectedAnswer + "!");
         wrongAnswers++;
-
     }
 
     var user = firebase.auth().currentUser;
@@ -73,14 +75,27 @@ function onButtonClick(e) {
     if (questionId >= questions.length) {
         clearInterval(updateTimer);
         updateTimer = null;
-        var timeAverage = Math.round((totalTime / questions.length) / 100.0) / 10.0;
-        $("#gameView").hide();
-        $("#outcome").show();
-        $("#yourTime").text(totalTime / 1000);
-        $("#yourAverage").text(timeAverage);
+        let timeoutId = null;
+        const showResults = function () {
+            if (timeoutId !== null) {
+                clearTimeout(timeoutId);
+            }
+            timeoutId = null;
+            var timeAverage = Math.round((totalTime / questions.length) / 100.0) / 10.0;
+            $("#gameView").hide();
+            $("#outcome").show();
+            $("#yourTime").text(totalTime / 1000);
+            $("#yourAverage").text(timeAverage);
 
-        var correctAnswersInPercent = (correctAnswers / questions.length) * 100;
-        $("#correctAnswersInPercent").text(correctAnswersInPercent);
+            var correctAnswersInPercent = (correctAnswers / questions.length) * 100;
+            $("#correctAnswersInPercent").text(correctAnswersInPercent);
+        };
+
+        const timeout = question.correct ? 0 : 4000;
+        $("#checkButton").hide();
+        $("#continueButton").one('click', showResults).show();
+        timeoutId = setTimeout(showResults, timeout);
+
     } else {
         nextQuestion();
     }

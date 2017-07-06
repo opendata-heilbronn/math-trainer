@@ -89,6 +89,12 @@ body, html {
     font-size: 20px;
 }
 
+button {
+    font-size: 16px;
+    margin: 8px;
+
+}
+
 .answer {
     font-size: 25px;
     justify-content: center;
