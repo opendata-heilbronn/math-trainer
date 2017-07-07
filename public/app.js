@@ -63,8 +63,9 @@ function readChallenges() {
         var list = $("#activeChallenges");
         list.empty();
         snapshot.forEach(function (entry) {
-            isOwner = user.uid == entry.val().createdById;
-            list.append(challengeJoinEntry(entry.val(), entry.key, isOwner))
+            const challengeRoom = entry.val();
+            isOwner = user.uid == challengeRoom.createdById;
+            list.append(challengeJoinEntry(challengeRoom, entry.key, isOwner))
         });
         $('.join-challenge').one("click", function (event) {
             var challengeRoomId = $(event.target).data("challengeid");
@@ -132,6 +133,7 @@ function checkUserLogin() {
 function startCountdownForChallengeId(challengeRoomId, countdownInSeconds) {
     var countdown = countdownInSeconds;
     console.log("startCountdownForChallengeId: ", challengeRoomId);
+    database.ref('/challengeRoom/' + challengeRoomId + "/forming").set(false);
     database.ref('/challengeRoom/' + challengeRoomId + "/countdown").set(countdown);
     if (countdownInSeconds > 0) {
         var timer = setInterval(function () {
@@ -242,6 +244,7 @@ function createChallengeRoom(challange) {
             maxTime: challange.maxTime,
             name: challange.name,
             questions: questions,
+            forming: true,
             players: players
         },
         function () {
@@ -252,9 +255,9 @@ function createChallengeRoom(challange) {
 
 //alle funktionen davor
 $(function () {
-/*    firebase.auth().onIdTokenChanged(function (user) {
-        console.log("onIdTokenChanged: ", user);
-    });*/
+    /*    firebase.auth().onIdTokenChanged(function (user) {
+     console.log("onIdTokenChanged: ", user);
+     });*/
     firebase.auth().onAuthStateChanged(function (user) {
         console.log("onAuthStateChanged: ", user);
         if (user) {

@@ -25,6 +25,8 @@ function startGame(_challengeRoomId, _questions) {
     updateTimer = setInterval(updateCurrentTime, 1000);
     $("#continueButton").hide();
     $("#checkButton").show();
+    document.getElementById("output").innerHTML = ("");
+
 
 }
 

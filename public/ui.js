@@ -13,10 +13,15 @@ function challengeJoinEntry(challengeRoom, refId, isOwner) {
     entry.append($("<div class='challenge-details'/>").text("Erstellt von: " + challengeRoom.createdBy));
     if (isOwner) {
         entry.append($("<button type='button' class='edit-challenge' data-challengeid='" + refId + "'/>").text("Verwalten"))
-
     } else {
-        entry.append($("<button type='button' class='join-challenge' data-challengeid='" + refId + "'/>").text("Jetzt mitmachen"))
+        if (challengeRoom.forming) {
+            entry.append($("<button type='button' class='join-challenge' data-challengeid='" + refId + "'/>").text("Jetzt mitmachen"))
+        }
     }
+    if (!challengeRoom.forming) {
+        entry.append($("<span/>").text("Challenge läuft schon"))
+    }
+
     return entry;
 
 }
