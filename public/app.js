@@ -3,8 +3,12 @@ var database = firebase.database();
 function signIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function (result) {
+        console.log("credential: ", result.credential);
         var accessToken = result.credential.accessToken;
         var idToken = result.credential.idToken;
+
+        console.log("accessToken: ", accessToken);
+        console.log("idToken: ", idToken);
 
         if (accessToken) {
             localStorage.setItem("accessToken", accessToken);
@@ -12,9 +16,7 @@ function signIn() {
         if (idToken) {
             localStorage.setItem("idToken", idToken);
         }
-
-
-        localStorage.setItem("provider", provider.prviderId);
+        localStorage.setItem("provider", provider.providerId);
         var user = result.user;
         updateUserInfo(user);
         readChallenges();
@@ -52,7 +54,7 @@ function readChallenges() {
         snapshot.forEach(function (entry) {
             list.append(challengeEntry(entry.val(), entry.key))
         });
-        $('.start-challenge').on("click", function (event) {
+        $('.start-challenge').one("click", function (event) {
             var challengeId = $(event.target).data("challengeid");
             startChallengeWithId(challengeId);
         });
@@ -61,14 +63,15 @@ function readChallenges() {
         var list = $("#activeChallenges");
         list.empty();
         snapshot.forEach(function (entry) {
-            isOwner = user.uid == entry.val().createdById;
-            list.append(challengeJoinEntry(entry.val(), entry.key, isOwner))
+            const challengeRoom = entry.val();
+            isOwner = user.uid == challengeRoom.createdById;
+            list.append(challengeJoinEntry(challengeRoom, entry.key, isOwner))
         });
-        $('.join-challenge').on("click", function (event) {
+        $('.join-challenge').one("click", function (event) {
             var challengeRoomId = $(event.target).data("challengeid");
             joinChallengeRoom(challengeRoomId);
         });
-        $('.edit-challenge').on("click", function (event) {
+        $('.edit-challenge').one("click", function (event) {
             var challengeRoomId = $(event.target).data("challengeid");
             editChallengeRoom(challengeRoomId);
         });
@@ -113,21 +116,35 @@ function checkUserLogin() {
             updateUserInfo(user);
             readChallenges();
         }).catch(function (error) {
-            console.error(error);
+            console.log(error);
+            console.log("Retry with access Token");
+            var credentialAccessToken = firebase.auth.GoogleAuthProvider.credential(null, accessToken);
+            firebase.auth().signInWithCredential(credentialAccessToken).then(function (user) {
+                updateUserInfo(user);
+                readChallenges();
+            }).catch(function (error) {
+                console.error(error);
+            });
+
         });
     }
 }
 
-function startCountdownForChallengeId(challengeRoomId) {
-    var countdown = 10;
-    var timer = setInterval(function () {
-        if (countdown > 0) {
-            countdown--;
-            database.ref('/challengeRoom/' + challengeRoomId + "/countdown").set(countdown)
-        } else {
-            clearInterval(timer)
-        }
-    }, 1000);
+function startCountdownForChallengeId(challengeRoomId, countdownInSeconds) {
+    var countdown = countdownInSeconds;
+    console.log("startCountdownForChallengeId: ", challengeRoomId);
+    database.ref('/challengeRoom/' + challengeRoomId + "/forming").set(false);
+    database.ref('/challengeRoom/' + challengeRoomId + "/countdown").set(countdown);
+    if (countdownInSeconds > 0) {
+        var timer = setInterval(function () {
+            if (countdown > 0) {
+                countdown--;
+                database.ref('/challengeRoom/' + challengeRoomId + "/countdown").set(countdown);
+            } else {
+                clearInterval(timer)
+            }
+        }, 1000);
+    }
 }
 
 function beginWithChallenge(challengeRoomId, challengeRoom) {
@@ -149,16 +166,35 @@ function showChallengeRoom(challengeRoomId) {
     $("#challengeRoom").show();
 
     updatePlayers(challengeRoomId);
+    $("#crQuit").one("click", function () {
+        $("#challengeList").show();
+        $("#challengeRoom").hide();
+        database.ref('/challengeRoom/' + challengeRoomId + '/players/' + user.uid).remove();
+    });
+    $("#crStart").one("click", function () {
+        console.log("crStart onClick");
+        database.ref('/challengeRoom/' + challengeRoomId + '/players').once('value', function (snapshot) {
+            if (snapshot.numChildren > 1) {
+                startCountdownForChallengeId(challengeRoomId, 10);
+            } else {
+                startCountdownForChallengeId(challengeRoomId, 0);
+            }
+        });
+    });
+    $("#crCancel").one("click", function () {
+        cancelChallengeRoom(challengeRoomId);
+    });
+
     database.ref('/challengeRoom/' + challengeRoomId).on('value', function (snapshot) {
         if (snapshot.exists()) {
             var challengeRoom = snapshot.val();
             $("#crChallenge").text(challengeRoom.name);
-            $("#crCreatedBy").text("Erstellt von "+challengeRoom.createdBy);
+            $("#crCreatedBy").text("Erstellt von " + challengeRoom.createdBy);
 
             if (challengeRoom["countdown"] !== undefined) {
                 $("#crCountdown").text("Es geht los in " + challengeRoom["countdown"] + " Sekunden");
                 $("#crCountdown").show();
-                if (challengeRoom["countdown"] == 0) {
+                if (challengeRoom["countdown"] === 0) {
                     beginWithChallenge(challengeRoomId, challengeRoom);
                 }
             } else {
@@ -175,18 +211,6 @@ function showChallengeRoom(challengeRoomId) {
                 $("#crStart").hide();
                 $("#crQuit").show();
             }
-            $("#crQuit").on("click", function () {
-                $("#challengeList").show();
-                $("#challengeRoom").hide();
-                database.ref('/challengeRoom/' + challengeRoomId + '/players/' + user.uid).remove();
-            });
-            $("#crStart").on("click", function () {
-                startCountdownForChallengeId(challengeRoomId);
-            });
-            $("#crCancel").on("click", function () {
-                cancelChallengeRoom(challengeRoomId);
-            });
-
         } else {
             $("#challengeRoom").hide();
             readChallenges();
@@ -195,13 +219,13 @@ function showChallengeRoom(challengeRoomId) {
 }
 
 function updatePlayers(challengeRoomId) {
-  database.ref('/challengeRoom/' + challengeRoomId + "/players").on('value', function(snapshot) {
-    var list = $("#challengeRoomPlayers");
-    list.empty();
-    snapshot.forEach(function(player) {
-      list.append(playerEntry(player.val()));
-    })
-  });
+    database.ref('/challengeRoom/' + challengeRoomId + "/players").on('value', function (snapshot) {
+        var list = $("#challengeRoomPlayers");
+        list.empty();
+        snapshot.forEach(function (player) {
+            list.append(playerEntry(player.val()));
+        })
+    });
 }
 
 function createChallengeRoom(challange) {
@@ -209,27 +233,39 @@ function createChallengeRoom(challange) {
     var questions = createQuestions(challange.maxQuestions, challange.maxMultiplier);
     var challengeRoom = database.ref('/challengeRoom/').push();
 
-    challengeRoom.set({
-        createdById: user.uid,
-        createdBy: user.displayName,
-        maxMultiplier: challange.maxMultiplier,
-        maxQuestions: challange.maxQuestions,
-        maxTime: challange.maxTime,
-        name: challange.name,
-        questions: questions
+    const players = {};
+    players[user.uid] = {displayName: user.displayName};
 
-    }, function () {
-        showChallengeRoom(challengeRoom.key);
-    });
+    challengeRoom.set({
+            createdById: user.uid,
+            createdBy: user.displayName,
+            maxMultiplier: challange.maxMultiplier,
+            maxQuestions: challange.maxQuestions,
+            maxTime: challange.maxTime,
+            name: challange.name,
+            questions: questions,
+            forming: true,
+            players: players
+        },
+        function () {
+            showChallengeRoom(challengeRoom.key);
+        }
+    );
 }
 
-//alle fuunktionen davor
+//alle funktionen davor
 $(function () {
-    if (firebase.auth().currentUser) {
-        updateUserInfo(firebase.auth().currentUser);
-        readChallenges();
-    } else {
-        $("#loginButton").on("click", signIn);
-        checkUserLogin();
-    }
+    /*    firebase.auth().onIdTokenChanged(function (user) {
+     console.log("onIdTokenChanged: ", user);
+     });*/
+    firebase.auth().onAuthStateChanged(function (user) {
+        console.log("onAuthStateChanged: ", user);
+        if (user) {
+            updateUserInfo(user);
+            readChallenges();
+        } else {
+            $("#loginButton").one("click", signIn);
+            checkUserLogin();
+        }
+    });
 });
