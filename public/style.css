@@ -4,6 +4,22 @@
     flex-direction: column;
 }
 
+#quitGameButtonFrame {
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+#quitGame {
+
+  display: flex;
+  width: auto;
+  height: auto;
+  margin-right: 16px;
+  margin-top: 8px;
+
+}
+
 #top-bar {
     background-image: linear-gradient(180deg, #02029b 1%, #040492 100%);
     display: flex;
