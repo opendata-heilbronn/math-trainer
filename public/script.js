@@ -8,9 +8,47 @@ var answer = document.getElementById("answer");
 var correctAnswers = 0;
 var wrongAnswers = 0;
 var updateTimer = null;
+var user = null;
+let timeoutId = null;
+
+function updateStatistics() {
+    firebase.database().ref("/statistics/" + challengeRoomId + "/data/" + user.uid).set({
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        correctAnswers: correctAnswers,
+        wrongAnsers: wrongAnswers,
+        totalQuestions: questions.length,
+        totalTime: totalTime,
+    });
+}
+
+function updatePlayerStats(snapshot) {
+    console.log("updatePlayers");
+}
+
+function showResults() {
+    console.log("Show result: " + timeoutId);
+    if (timeoutId !== null) {
+        console.log("clear timeout");
+        clearTimeout(timeoutId);
+    }
+    firebase.database().ref('/statistics/' + challengeRoomId + "/data").off('value', updatePlayerStats);
+
+    timeoutId = null;
+    var timeAverage = Math.round((totalTime / questions.length) / 100.0) / 10.0;
+    $("#gameView").hide();
+    $("#outcome").show();
+    $("#yourTime").text(totalTime / 1000);
+    $("#yourAverage").text(timeAverage);
+
+    var correctAnswersInPercent = (correctAnswers / questions.length) * 100;
+    $("#correctAnswersInPercent").text(correctAnswersInPercent);
+};
 
 
 function startGame(_challengeRoomId, _questions) {
+    user = firebase.auth().currentUser;
+
     answerList = [];
     questionId = 0;
     totalTime = 0;
@@ -26,8 +64,8 @@ function startGame(_challengeRoomId, _questions) {
     $("#continueButton").hide();
     $("#checkButton").show();
     document.getElementById("output").innerHTML = ("");
-
-
+    updateStatistics();
+    firebase.database().ref('/statistics/' + challengeRoomId + "/data").on('value', updatePlayerStats);
 }
 
 function updateCurrentTime() {
@@ -39,6 +77,7 @@ function updateCurrentTime() {
     }
     document.getElementById("time").innerHTML = text;
 }
+
 
 function onButtonClick(e) {
     e.preventDefault();
@@ -55,7 +94,6 @@ function onButtonClick(e) {
         wrongAnswers++;
     }
 
-    var user = firebase.auth().currentUser;
     firebase.database().ref("/statistics/" + challengeRoomId + "/answers/" + user.uid + "/" + questionId).set(question);
 
 
@@ -66,33 +104,10 @@ function onButtonClick(e) {
      "</td><td>" + question.expectedAnswer + "</td><td>" + question.userInput +
      "</td><td>" + question.timeDifference + "</td><td>" + question.correct + "</td></tr>"));*/
 
-
-    firebase.database().ref("/statistics/" + challengeRoomId + "/data/" + user.uid).set({
-        displayName: user.displayName,
-        correctAnswers: correctAnswers,
-        totalQuestions: questions.length,
-        totalTime: totalTime,
-    });
-
+    updateStatistics();
     if (questionId >= questions.length) {
         clearInterval(updateTimer);
         updateTimer = null;
-        let timeoutId = null;
-        const showResults = function () {
-            if (timeoutId !== null) {
-                clearTimeout(timeoutId);
-            }
-            timeoutId = null;
-            var timeAverage = Math.round((totalTime / questions.length) / 100.0) / 10.0;
-            $("#gameView").hide();
-            $("#outcome").show();
-            $("#yourTime").text(totalTime / 1000);
-            $("#yourAverage").text(timeAverage);
-
-            var correctAnswersInPercent = (correctAnswers / questions.length) * 100;
-            $("#correctAnswersInPercent").text(correctAnswersInPercent);
-        };
-
         const timeout = question.correct ? 0 : 4000;
         $("#checkButton").hide();
         $("#continueButton").one('click', showResults).show();
@@ -103,8 +118,6 @@ function onButtonClick(e) {
     }
 
     return false;
-
-
 }
 
 function nextQuestion() {
