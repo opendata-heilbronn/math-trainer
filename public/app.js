@@ -34,7 +34,8 @@ function signIn() {
 
 function updateUserInfo(user) {
     console.log("user: ", user);
-    $("#currentUser").text('Eingeloggt als:   ' + user.displayName);
+    $("#currentUser").text(user.displayName);
+    $("#photoURL").attr("src", user.photoURL);
 }
 
 function startChallengeWithId(challengeId) {
@@ -82,10 +83,15 @@ function joinChallengeRoom(challengeRoomId) {
     var user = firebase.auth().currentUser;
     database.ref("/challengeRoom/" + challengeRoomId + "/players/" + user.uid)
         .set({
-            displayName: user.displayName
+            displayName: user.displayName,
+            photoURL: user.photoURL
         }, function () {
             showChallengeRoom(challengeRoomId);
-        });
+        })
+
+
+
+        ;
 }
 
 function editChallengeRoom(challengeRoomId) {
@@ -234,7 +240,7 @@ function createChallengeRoom(challange) {
     var challengeRoom = database.ref('/challengeRoom/').push();
 
     const players = {};
-    players[user.uid] = {displayName: user.displayName};
+    players[user.uid] = {displayName: user.displayName, photoURL: user.photoURL};
 
     challengeRoom.set({
             createdById: user.uid,

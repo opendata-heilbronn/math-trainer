@@ -1,148 +1,170 @@
 .container {
-    display: flex;
-    /* or inline-flex */
-    flex-direction: column;
+  display: flex;
+  /* or inline-flex */
+  flex-direction: column;
+}
+
+#quitGameButtonFrame {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#userInformationsInterface {
+  display: flex;
+  align-items: center;
+}
+
+#photoUrl {
+  max-width: 60px;
+  max-height: 60px;
+  margin-right: 16px;
+  margin-top: 16px;
+  margin-bottom: 2px;
+}
+
+#quitGame {
+  display: flex;
+  width: auto;
+  height: auto;
+  margin-right: 16px;
+  margin-top: 8px;
 }
 
 #top-bar {
-    background-image: linear-gradient(180deg, #02029b 1%, #040492 100%);
-    display: flex;
-    justify-content: space-between;
+  background-image: linear-gradient(180deg, #02029b 1%, #040492 100%);
+  display: flex;
+  justify-content: space-between;
 }
 
 .challenge-entry {
-
-    padding: 5px;
-
+  padding: 5px;
 }
 
 .player-entry {
-
-    padding: 5px;
-
+  padding: 5px;
 }
+
 #currentuser {
-    font-family: orbitron;
-    font-size: 20px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    margin-right: 16px;
-    margin-top: 16px;
+  font-family: orbitron;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  margin-right: 16px;
+  margin-top: 16px;
 }
 
 #title {
-    font-family: orbitron;
-    font-size: 50px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    margin-left: 16px;
-    margin-top: 16px;
+  font-family: orbitron;
+  font-size: 50px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  margin-left: 16px;
+  margin-top: 16px;
 }
 
 #outcome {
   margin-left: 16px;
-
 }
 
 body {
-    /* background: #161650; */
-    background-image: linear-gradient(180deg, #0808a1 1%, #161650 100%);
-    font-family: orbitron;
-    color: #fff;
+  /* background: #161650; */
+  background-image: linear-gradient(180deg, #0808a1 1%, #161650 100%);
+  font-family: orbitron;
+  color: #fff;
 }
 
 body, html {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .question {
-    font-family: orbitron;
-    font-size: 52px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    justify-content: center;
-    align-items: center;
-    transition: all 1s;
-    text-align: center;
-    margin-top: 48px;
-    margin-bottom: 16px;
+  font-family: orbitron;
+  font-size: 52px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  justify-content: center;
+  align-items: center;
+  transition: all 1s;
+  text-align: center;
+  margin-top: 48px;
+  margin-bottom: 16px;
 }
 
 .question-no {
-    font-family: orbitron;
-    font-size: 16px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-top: 32px;
-    margin-bottom: 16px;
+  font-family: orbitron;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 16px;
 }
 
 .button {
-    background: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
-    padding: 5px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 1s;
-    font-size: 20px;
+  background: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 1s;
+  font-size: 20px;
 }
 
 button {
-    font-size: 16px;
-    margin: 8px;
-
+  font-size: 16px;
+  margin: 8px;
 }
 
 .answer {
-    font-size: 25px;
-    justify-content: center;
-    transition: all 1s;
+  font-size: 25px;
+  justify-content: center;
+  transition: all 1s;
 }
 
 .output {
-    font-size: 30px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .time {
-    margin-top: 8px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  margin-top: 8px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 #results td {
-    padding: 5px;
+  padding: 5px;
 }
 
 #challengeRoom {
-    display: flex;
+  display: flex;
 }
 
 #challengeList {
-    display: flex;
+  display: flex;
 }
 
 .challenge-list {
-    padding: 16px;
-    width: 50%;
+  padding: 16px;
+  width: 50%;
 }
 
 .challenge-entry {}
 
 .challenge-name {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .info-box {
-    padding: 16px;
+  padding: 16px;
 }
+
 h3 {
-    font-size: 30px;
+  font-size: 30px;
 }

@@ -26,7 +26,10 @@
 
 	<div id="top-bar">
 		<div id="title">Math Trainer</div>
+		<div id="userInformationsInterface">
 		<div id="currentUser"></div>
+		<img id="photoURL"></img>
+	</div>
 	</div>
 	<hr>
 
@@ -74,8 +77,13 @@
 	<div id="gameView" style="display: none">
 		<div class="container">
 			<link href="style.css" rel="stylesheet">
+			<div id="quitGameButtonFrame">
+			<button id="quitGame">Spiel Verlassen</button>
+		</div>
+
 
 			<div id="questionNo" class="question-no"></div>
+
 			<div id="question" class="question"></div>
 
 			<form onsubmit="onButtonClick(event)" style="text-align: center">
